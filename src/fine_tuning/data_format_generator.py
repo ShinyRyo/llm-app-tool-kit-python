@@ -39,9 +39,8 @@ def create_training_data(csv_path):
     json_file_path = os.path.join(current_dir, 'train_json/train.jsonl')
 
     with open(json_file_path, 'w', encoding='utf-8') as f:
-        for item in data:
-            json_line = json.dumps(item, ensure_ascii=False)
-            f.write(json_line + '\n')
+        json_line = json.dumps(data, ensure_ascii=False)
+        f.write(json_line + '\n')
 
 
 
