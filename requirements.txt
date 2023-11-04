@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+httpx
+openai
+python-dotenv
+langchain
+google-search-results
+streamlit
+tiktoken
