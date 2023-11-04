@@ -10,7 +10,6 @@ class ChatTemplate:
         self._templates = self._read_chat_templates()
 
     def _read_chat_templates(self) -> list[dict[str, str]]:
-        template_list = []
         with open(self.csv_path) as csv_file:
             templates = csv.DictReader(csv_file)
 

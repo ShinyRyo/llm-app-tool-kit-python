@@ -7,3 +7,4 @@ langchain
 google-search-results
 streamlit
 tiktoken
+pytest
