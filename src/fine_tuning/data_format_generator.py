@@ -24,7 +24,10 @@ class ChatTemplate:
         return self._templates
 
 
-def create_training_data(csv_path):
+def create_training_data(csv_path, output_dir: str = None):
+    if output_dir is None:
+        output_dir = os.path.dirname(os.path.abspath(__file__))
+
     chat_template = ChatTemplate(csv_path)
     data = []
 
@@ -35,8 +38,7 @@ def create_training_data(csv_path):
             chat_template.templates[i + 1]
         ]})
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    json_file_path = os.path.join(current_dir, 'train_json/train.jsonl')
+    json_file_path = os.path.join(output_dir, 'train_json/train.jsonl')
 
     with open(json_file_path, 'w', encoding='utf-8') as f:
         for item in data:
