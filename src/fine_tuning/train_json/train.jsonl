@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"messages": [{"role": "value1", "content": "value2"}, {"role": "value3", "content": "value4"}, {"role": "value5", "content": "value6"}]}
+=======
+[{"messages": [{"role": "system", "content": "hogehogehoge"}, {"role": "user", "content": "hugehugehuge"}, {"role": "assistant", "content": "hagehagehage"}]}]
+>>>>>>> 84400bd4c24320f8d4791d02a494b35ad083f321

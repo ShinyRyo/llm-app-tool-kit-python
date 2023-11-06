@@ -10,7 +10,6 @@ class ChatTemplate:
         self._templates = self._read_chat_templates()
 
     def _read_chat_templates(self) -> list[dict[str, str]]:
-        template_list = []
         with open(self.csv_path) as csv_file:
             templates = csv.DictReader(csv_file)
 
@@ -41,9 +40,8 @@ def create_training_data(csv_path, output_dir: str = None):
     json_file_path = os.path.join(output_dir, 'train_json/train.jsonl')
 
     with open(json_file_path, 'w', encoding='utf-8') as f:
-        for item in data:
-            json_line = json.dumps(item, ensure_ascii=False)
-            f.write(json_line + '\n')
+        json_line = json.dumps(data, ensure_ascii=False)
+        f.write(json_line + '\n')
 
 
 
