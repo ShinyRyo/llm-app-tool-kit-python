@@ -29,4 +29,4 @@ value5,value6
         with open(output_file) as f:
             data = json.loads(f.read())
 
-        assert data == {"messages": [{"role": "value1", "content": "value2"}, {"role": "value3", "content": "value4"}, {"role": "value5", "content": "value6"}]}
+        assert data == [{'messages': [{'role': 'value1', 'content': 'value2'}, {'role': 'value3', 'content': 'value4'}, {'role': 'value5', 'content': 'value6'}]}]
