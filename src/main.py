@@ -1,4 +1,5 @@
-from fine_tuning.data_format_generator import create_training_data
+from fine_tuning.fine_tuning import create_training_file, create_dataset
 
 if __name__ == '__main__':
-    create_training_data('src/fine_tuning/train_csv/yukkuri-marisa.csv')
+    # create_dataset('yukkuri-marisa.csvZ')
+    create_training_file()

@@ -39,11 +39,13 @@ def create_training_data(csv_path: str, output_dir: str = None):
             chat_template.templates[i + 1]
         ]})
 
+
     json_file_path = os.path.join(output_dir, f'train_json/{csv_file_name}.jsonl')
 
-    with open(json_file_path, 'w', encoding='utf-8') as f:
-        json_line = json.dumps(data, ensure_ascii=False)
-        f.write(json_line + '\n')
+    for d in data:
+        with open(json_file_path, 'a', encoding='utf-8') as f:
+            json_line = json.dumps(d, ensure_ascii=False)
+            f.write(json_line + '\n')
 
 
 

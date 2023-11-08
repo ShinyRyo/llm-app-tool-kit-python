@@ -1,5 +1,6 @@
-from src.fine_tuning.data_format_generator import create_training_data
+from .data_format_generator import create_training_data
 import os
+import openai
 
 def get_train_csv_file(csv_file):
     save_to = f'train_csv/{csv_file}'
@@ -18,5 +19,13 @@ def create_dataset(csv_file):
 
     except:
         raise Exception('トレーニングデータ用のファイルを作成している最中にエラー発生')
+
+def create_training_file():
+    print(os.path.exists('src/fine_tuning/train_json/yukkuri-marisa.jsonl'))
+    openai.File.create(
+        file=open('src/fine_tuning/train_json/yukkuri-marisa.jsonl'),
+        purpose='fine-tune'
+    )
+
 
 
