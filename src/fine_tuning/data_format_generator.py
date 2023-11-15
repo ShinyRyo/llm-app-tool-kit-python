@@ -4,7 +4,13 @@ import tiktoken
 import json
 import csv
 
+
 class ChatTemplate:
+    @classmethod
+    def get_templates(cls, csv_path):
+        chat_template = ChatTemplate(csv_path)
+        return chat_template.templates
+
     def __init__(self, csv_path) -> None:
         self.csv_path = csv_path
         self._templates = self._read_chat_templates()
@@ -18,34 +24,45 @@ class ChatTemplate:
     @property
     def templates(self) -> list[dict[str, str]]:
         if len(self._templates) < 1:
-            raise IndexError('templatesの中身が空です')
+            raise IndexError("templatesの中身が空です")
 
         return self._templates
 
 
-def create_training_data(csv_path: str, output_dir: str = None):
-    if output_dir is None:
-        output_dir = os.path.dirname(os.path.abspath(__file__))
+class TrainingJsonFormatter:
+    input_csv: str
+    output_dir: str
 
-    chat_template = ChatTemplate(csv_path)
-    csv_file = csv_path.split('/')[-1]
-    csv_file_name = csv_file.split('.')[0]
-    data = []
+    def __init__(self, input_csv, output_dir) -> None:
+        self.input_csv = input_csv
+        self.output_dir = output_dir
+        self.file_name = ""
 
-    for i in range(1, len(chat_template.templates), 2):
-        data.append({'messages': [
-            chat_template.templates[0],
-            chat_template.templates[i],
-            chat_template.templates[i + 1]
-        ]})
+        if not self.output_dir:
+            self.output_dir = os.path.dirname(os.path.abspath(__file__))
 
+    def create_format(self):
+        templates = ChatTemplate.get_templates(self.input_csv)
+        file = self.input_csv.split("/")[-1]
+        self.file_name = file.split(".")[0]
+        data = [
+            {
+                "messages": [
+                    templates.templates[0],
+                    templates.templates[i],
+                    templates.templates[i + 1],
+                ]
+            }
+            for i in range(1, len(templates.templates), 2)
+        ]
 
-    json_file_path = os.path.join(output_dir, f'train_json/{csv_file_name}.jsonl')
+        return data
 
-    for d in data:
-        with open(json_file_path, 'a', encoding='utf-8') as f:
-            json_line = json.dumps(d, ensure_ascii=False)
-            f.write(json_line + '\n')
-
-
+    def saved_train_file(self):
+        saved_file_path = os.path.join(self.output_dir, f"train_json/{self.file_name}.jsonl")
+        messages = self.create_format()
+        for message in messages:
+            with open(saved_file_path, 'a', encoding='utf-8') as f:
+                json_line = json.dumps(message, ensure_ascii=False)
+                f.write(json_line + "\n")
 

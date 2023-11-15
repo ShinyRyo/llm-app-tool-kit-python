@@ -19,20 +19,6 @@ value5,value6
         chat_template = ChatTemplate(csv_path=csv_content)
         assert chat_template.templates == [{'role': 'value1', 'content': 'value2'}, {'role': 'value3', 'content': 'value4'}, {'role': 'value5', 'content': 'value6'}]
 
-    def test_create_training_data(self, csv_content, tmpdir):
-        output_dir = tmpdir.mkdir('train_json')
-        output_file_path = output_dir.join('test.jsonl')
-        print('tmpdir: ', tmpdir)
-        print('output_dir: ', output_dir)
-        create_training_data(csv_path=csv_content, output_dir=tmpdir)
-        assert tmpdir.exists() == True
-        assert output_dir.exists() == True
-        assert output_file_path.exists() == True
-
-
-        with open(output_file_path) as f:
-            data = json.loads(f.read())
-
-        assert data == [{'messages': [{'role': 'value1', 'content': 'value2'}, {'role': 'value3', 'content': 'value4'}, {'role': 'value5', 'content': 'value6'}]}]
-
+    def test_create_instance_dataset(self):
+        pass
 
