@@ -48,18 +48,18 @@ class TrainingJsonFormatter:
         data = [
             {
                 "messages": [
-                    templates.templates[0],
-                    templates.templates[i],
-                    templates.templates[i + 1],
+                    templates[0],
+                    templates[i],
+                    templates[i + 1],
                 ]
             }
-            for i in range(1, len(templates.templates), 2)
+            for i in range(1, len(templates), 2)
         ]
 
         return data
 
     def saved_train_file(self):
-        saved_file_path = os.path.join(self.output_dir, f"train_json/{self.file_name}.jsonl")
+        saved_file_path = os.path.join(self.output_dir, f"{self.file_name}.jsonl")
         messages = self.create_format()
         for message in messages:
             with open(saved_file_path, 'a', encoding='utf-8') as f:
