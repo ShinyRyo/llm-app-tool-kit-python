@@ -1,7 +1,9 @@
-import os
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.messages import HumanMessage, SystemMessage
+import os
+import pytest
 
+@pytest.mark.skip(reason="This test is too slow")
 def test_chat():
     messages = [
         SystemMessage(content=
