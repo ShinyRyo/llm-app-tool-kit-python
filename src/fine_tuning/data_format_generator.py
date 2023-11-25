@@ -59,8 +59,8 @@ class TrainingJsonFormatter:
         return data
 
     def saved_train_file(self):
-        saved_file_path = os.path.join(self.output_dir, f"{self.file_name}.jsonl")
         messages = self.create_format()
+        saved_file_path = os.path.join(self.output_dir, f"{self.file_name}.jsonl")
         for message in messages:
             with open(saved_file_path, 'a', encoding='utf-8') as f:
                 json_line = json.dumps(message, ensure_ascii=False)
