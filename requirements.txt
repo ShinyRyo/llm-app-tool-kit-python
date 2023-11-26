@@ -8,3 +8,6 @@ google-search-results
 streamlit
 tiktoken
 pytest
+pycoingecko
+responses
+beautifulsoup4
