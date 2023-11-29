@@ -11,3 +11,4 @@ pytest
 pycoingecko
 responses
 beautifulsoup4
+wikipedia
