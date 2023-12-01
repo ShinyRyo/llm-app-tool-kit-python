@@ -10,20 +10,6 @@ def test_get_train_csv_file():
     assert os.path.exists(csv_file)
 
 
-# def test_create_dataset(tmpdir):
-#     csv_file = get_train_csv_file("yukkuri-marisa.csv")
-#     formatter = TrainingJsonFormatter(
-#         csv_file, "src/fine_tuning/train_json"
-#     )
-#     formatter.saved_train_file()
-
-
-# def test_upload_training_file():
-#     openai.File.create(
-#         file=open("src/fine_tuning/train_json/yukkuri-marisa.jsonl"),
-#         purpose="fine-tune",
-#     )
-
 @pytest.mark.skip(reason="This test is too slow")
 def test_fine_tuning_execute():
     response = openai.FineTuningJob.create(

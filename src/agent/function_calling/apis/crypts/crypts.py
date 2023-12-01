@@ -7,9 +7,6 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 import json
 
-""" 
-現在におけるビットコインの価格をドルでどのくらいですか？
-"""
 cg = CoinGeckoAPI()
 
 def get_cryptocurrency_price(crypts: list[str], vs_currencies: str):
@@ -39,7 +36,7 @@ def execute_agent(request: str, debug: bool = False):
     result = agent.run(request)
     return result
 
-response = execute_agent("現在におけるイーサリアムとドッジコインの価格をドルと円でどのくらいですか？", debug=True)
+response = execute_agent("現在のイーサリアムとドッジコインの価格をドルと円で表すとどのくらいですか？", debug=True)
 print(response)
 
 # test_get_cryptocurrency_price = get_cryptocurrency_price(["ethereum"], "usd")
