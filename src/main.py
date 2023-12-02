@@ -9,6 +9,7 @@ from langchain.callbacks import AsyncIteratorCallbackHandler
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage
 from pydantic import BaseModel
+from .agent.function_calling.apis.crypts.crypts import execute_agent
 
 load_dotenv()
 
@@ -51,5 +52,4 @@ async def send_message(content: str) -> AsyncIterable[str]:
 
 @app.post("/stream_chat")
 async def stream_chat(message: Message):
-    generator = send_message(message.content)
-    return StreamingResponse(generator, media_type="text/event-stream")
+    return StreamingResponse(execute_agent(message), media_type="text/event-stream")
