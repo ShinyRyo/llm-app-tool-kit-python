@@ -5,6 +5,8 @@ from enum import Enum
 from langchain.tools import BaseTool
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
+from langchain import SerpAPIWrapper
+from langchain.callbacks import FinalStreamingStdOutCallbackHandler
 import json
 
 cg = CoinGeckoAPI()
@@ -29,15 +31,12 @@ class CryptocurrencyPriceTool(BaseTool):
         raise NotImplementedError("This tool does not support async")
 
 
-def execute_agent(request: str, debug: bool = False):
-    llm = ChatOpenAI(model="gpt-3.5-turbo")
+async def execute_agent(request: str, debug: bool = False):
+    callback = FinalStreamingStdOutCallbackHandler()
+    llm = ChatOpenAI(model="gpt-3.5-turbo", streaming=True, callbacks=[callback])
     tools = [CryptocurrencyPriceTool()]
     agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.OPENAI_MULTI_FUNCTIONS, verbose=debug)
-    result = agent.run(request)
-    return result
+    for response in agent.run(request):
+        yield response
 
-response = execute_agent("現在のイーサリアムとドッジコインの価格をドルと円で表すとどのくらいですか？", debug=True)
-print(response)
 
-# test_get_cryptocurrency_price = get_cryptocurrency_price(["ethereum"], "usd")
-# print(test_get_cryptocurrency_price)
