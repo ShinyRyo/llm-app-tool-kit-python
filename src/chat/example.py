@@ -48,4 +48,3 @@ chain = StreamingChain(llm=chat, prompt=prompt)
 for output in chain.stream(input={'content': '自己紹介をしてくれますか？'}):
     print(output)
 
-# print()

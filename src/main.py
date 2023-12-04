@@ -52,4 +52,4 @@ async def send_message(content: str) -> AsyncIterable[str]:
 
 @app.post("/stream_chat")
 async def stream_chat(message: Message):
-    return StreamingResponse(send_message(message.content), media_type="text/event-stream")
+    return StreamingResponse(execute_agent(message.content), media_type="text/event-stream")

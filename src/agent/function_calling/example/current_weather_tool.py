@@ -3,7 +3,7 @@ from tabnanny import verbose
 from pydantic import Field, BaseModel
 from langchain.tools import BaseTool
 from typing import Type
-from .schema.weather import GetCurrentWeatherInput, WeatherModel
+from ..schema.weather import GetCurrentWeatherInput, WeatherModel
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 
