@@ -34,23 +34,26 @@ class Message(BaseModel):
     content: str
 
 
-llm = ChatOpenAI(
-    model_name="gpt-3.5-turbo",
-    streaming=True,
-    callbacks=[],
-)
+async def create_generator(query: str):
+    stream_it = AsyncCallbackHandler()
+    llm = ChatOpenAI(
+        model_name="gpt-3.5-turbo",
+        streaming=True,
+        callbacks=[stream_it],
+    )
 
-agent = initialize_agent(
-    tools=[CryptocurrencyPriceTool()],
-    llm=llm,
-    agent=AgentType.OPENAI_MULTI_FUNCTIONS,
-    return_intermediate_steps=False,
-    verbose=True,
-)
+    memory = ConversationBufferWindowMemory(
+        memory_key="chat_history", k=5, return_messages=True, output_key="output"
+    )
 
+    agent = initialize_agent(
+        tools=[CryptocurrencyPriceTool()],
+        llm=llm,
+        agent=AgentType.OPENAI_MULTI_FUNCTIONS,
+        return_intermediate_steps=False,
+        verbose=True,
+    )
 
-async def create_generator(query: str, stream_it: AsyncCallbackHandler):
-    agent.callbacks = [stream_it]
     task = asyncio.create_task(agent.arun(query))
     async for token in stream_it.aiter():
         yield token
@@ -60,8 +63,7 @@ async def create_generator(query: str, stream_it: AsyncCallbackHandler):
 
 @app.post("/stream_chat")
 async def stream_chat(message: Message):
-    stream_it = AsyncCallbackHandler()
-    gen = create_generator(message.content, stream_it)
+    gen = create_generator(message.content)
     return StreamingResponse(gen, media_type="text/event-stream")
 
 

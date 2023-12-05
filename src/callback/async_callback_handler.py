@@ -7,6 +7,7 @@ class AsyncCallbackHandler(AsyncIteratorCallbackHandler):
     final_answer: bool = False
 
     async def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        print(token)
         self.content += token
 
         if self.final_answer:
