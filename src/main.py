@@ -40,28 +40,18 @@ llm = ChatOpenAI(
     callbacks=[],
 )
 
-memory = ConversationBufferWindowMemory(
-    memory_key="chat_history", k=5, return_messages=True, output_key="output"
-)
-
 agent = initialize_agent(
-    tools=[],
+    tools=[CryptocurrencyPriceTool()],
     llm=llm,
     agent=AgentType.OPENAI_MULTI_FUNCTIONS,
-    callbacks=[],
-    memory=memory,
     return_intermediate_steps=False,
     verbose=True,
 )
 
 
-async def run_call(query, stream_it: AsyncCallbackHandler):
-    agent.agent.llm_chain.llm.callbacks = [stream_it]
-    await agent.acall(inputs={"input": query})
-
-
 async def create_generator(query: str, stream_it: AsyncCallbackHandler):
-    task = asyncio.create_task(run_call(query, stream_it))
+    agent.callbacks = [stream_it]
+    task = asyncio.create_task(agent.arun(query))
     async for token in stream_it.aiter():
         yield token
 
