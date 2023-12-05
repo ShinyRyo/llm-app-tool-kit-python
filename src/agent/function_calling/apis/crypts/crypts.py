@@ -6,8 +6,10 @@ from langchain.tools import BaseTool
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain import SerpAPIWrapper
-from langchain.callbacks import FinalStreamingStdOutCallbackHandler
+from langchain.callbacks import AsyncIteratorCallbackHandler
+from asyncer import asyncify
 import json
+
 
 cg = CoinGeckoAPI()
 
@@ -28,15 +30,5 @@ class CryptocurrencyPriceTool(BaseTool):
         return result
 
     def _arun(self, crypts: list[str], vs_currencies: str):
-        raise NotImplementedError("This tool does not support async")
-
-
-async def execute_agent(request: str, debug: bool = False):
-    callback = FinalStreamingStdOutCallbackHandler()
-    llm = ChatOpenAI(model="gpt-3.5-turbo", streaming=True, callbacks=[callback])
-    tools = [CryptocurrencyPriceTool()]
-    agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.OPENAI_MULTI_FUNCTIONS, verbose=debug)
-    for response in agent.run(request):
-        yield response
-
+        return asyncify(self._run, cancellable=False)(crypts, vs_currencies)
 

@@ -1,18 +1,11 @@
-from langchain.chat_models import ChatOpenAI
-from langchain.schema.messages import HumanMessage, SystemMessage
-import os
-import pytest
+import aiohttp
+import asyncio
 
-@pytest.mark.skip(reason="This test is too slow")
-def test_chat():
-    messages = [
-        SystemMessage(content=
-            "あなたは次のような人物になりきって回答をしてください。魔理沙:やや強気で物知りな女性。文法上違和感のない限りかならず「だぜ」を語尾につけてしゃべる。敬語やですます口調は一切使わず、小学校2年生でも理解できるように説明してくれる。"
-        ),
-        HumanMessage(content="MongoDBの使い方を教えてください。"),
-    ]
+async def fetch_stream():
+    async with aiohttp.ClientSession() as session:
+        async with session.post('http://localhost:8000/stream_chat', json={'content': '現在のイーサリアムとドッジコインの価格をドルで取得してくれますか？'}, headers={'accept': 'text/event-stream'}) as response:
+            async for chunk in response.content.iter_chunked(1024):  # 1KBのチャンクサイズ
+                print(chunk.decode('utf-8'), end='', flush=True)
 
-    chat = ChatOpenAI(model="ft:gpt-3.5-turbo-0613:onikarubi::8OKQ1Enq")
-
-    message = chat.invoke(messages)
-    print(message.content)
+loop = asyncio.get_event_loop()
+loop.run_until_complete(fetch_stream())
