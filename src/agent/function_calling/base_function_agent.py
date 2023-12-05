@@ -1,7 +1,7 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.tools import BaseTool
 from langchain.callbacks.base import BaseCallbackHandler
-from langchain.agents import AgentType, AgentExecutor
+from langchain.agents import AgentType, AgentExecutor, initialize_agent
 
 
 class BaseFunctionAgent(object):
@@ -31,11 +31,12 @@ class BaseFunctionAgent(object):
     def add_callback(self, callback: BaseCallbackHandler):
         self.callbacks.append(callback)
 
-    def create_agent(self, debug: bool = False) -> AgentExecutor:
-        return AgentExecutor(
+    def get_executor(self, debug: bool = False) -> AgentExecutor:
+        return initialize_agent(
             tools=self.tools,
             llm=self.llm,
             agent=AgentType.OPENAI_MULTI_FUNCTIONS,
             callbacks=self.callbacks,
+            return_intermediate_steps=False,
             verbose=debug
         )
