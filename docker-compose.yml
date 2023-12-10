@@ -5,16 +5,41 @@ services:
     build: .
     volumes:
       - '.:/app'
-
     tty: true
     stdin_open: true
-
     ports:
       - 8000:8000
     env_file:
       - .env.local
     extra_hosts:
       - localhost:${DOCKER_HOST_IP}
+    depends_on:
+      - redis
+      - rabbitmq
 
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
 
+  rabbitmq:
+    image: "rabbitmq:3-management-alpine"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "rabbitmq_data:/var/lib/rabbitmq"
 
+  celery_worker:
+    build: .
+    tty: true
+    stdin_open: true
+    command: celery -A src.tasks worker --loglevel=info
+    volumes:
+      - '.:/app'
+    depends_on:
+      - rabbitmq
+      - redis
+
+volumes:
+  rabbitmq_data:

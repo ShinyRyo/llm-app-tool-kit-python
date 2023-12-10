@@ -15,3 +15,5 @@ wikipedia
 aiohttp
 python-socketio
 asyncer
+celery
+redis
