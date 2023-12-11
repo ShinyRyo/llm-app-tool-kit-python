@@ -5,7 +5,6 @@ from enum import Enum
 from langchain.tools import BaseTool
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from langchain import SerpAPIWrapper
 from langchain.callbacks import AsyncIteratorCallbackHandler
 from asyncer import asyncify
 import json
