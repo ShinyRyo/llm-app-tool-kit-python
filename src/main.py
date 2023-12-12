@@ -4,10 +4,6 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from langchain.callbacks import (
-    AsyncIteratorCallbackHandler,
-    FinalStreamingStdOutCallbackHandler,
-)
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage
 from pydantic import BaseModel
@@ -16,7 +12,7 @@ from agent.function_calling.apis.crypts.crypts import CryptocurrencyPriceTool
 from langchain.agents import AgentType, AgentExecutor
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferWindowMemory
-from callback.async_callback_handler import AsyncCallbackHandler
+from callback.async_callback_handler import AsyncOpenAIFunctionAgentCallbackHandler
 
 load_dotenv()
 
@@ -35,7 +31,7 @@ class Message(BaseModel):
 
 
 async def create_generator(query: str):
-    stream_it = AsyncCallbackHandler()
+    stream_it = AsyncOpenAIFunctionAgentCallbackHandler()
     llm = ChatOpenAI(
         model_name="gpt-3.5-turbo",
         streaming=True,
