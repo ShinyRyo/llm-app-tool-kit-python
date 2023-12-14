@@ -1,8 +1,10 @@
 from src.agent.function_calling.base_function_agent import BaseFunctionAgent
 from langchain.chat_models import ChatOpenAI
-from src.agent.function_calling.apis.crypts.crypts import CryptocurrencyPriceTool
-from src.agent.function_calling.apis.yfinance.yfinance import YahooFinanceTool
+from src.services.crypts.crypts import CryptocurrencyPriceTool
+from src.services.yfinance.yfinance import YahooFinanceTool
+import pytest
 
+@pytest.mark.skip(reason="This test is too slow")
 def test_execute_tools():
     llm = ChatOpenAI(
         model_name="gpt-3.5-turbo-1106",

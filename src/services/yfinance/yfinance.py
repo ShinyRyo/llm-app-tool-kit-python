@@ -1,15 +1,12 @@
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.tools.base import BaseTool
-from pydantic import BaseModel, Field
 from asyncer import asyncify
 from typing import Optional, Type
+from src.models.ticker_symbol import TickerSymbol
+from pydantic import BaseModel
 import pytest
 import yfinance as yf
-
-
-class TickerSymbol(BaseModel):
-    symbol: str = Field(description="株価を知りたい企業のシンボルや通貨のシンボルを入力してください")
 
 
 def get_crypt_data(symbol: str):

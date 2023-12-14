@@ -1,8 +1,8 @@
 import pytest
 import openai
 import os
-from src.fine_tuning.fine_tuning import get_train_csv_file
-from src.fine_tuning.data_format_generator import TrainingJsonFormatter
+from src.training.fine_tuning import get_train_csv_file
+from src.training.data_format_generator import TrainingJsonFormatter
 
 @pytest.mark.skip(reason="This test is too slow")
 def test_get_train_csv_file():

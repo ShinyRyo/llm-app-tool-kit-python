@@ -9,7 +9,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage
 from pydantic import BaseModel
 from .agent.function_calling.base_function_agent import BaseFunctionAgent
-from .agent.function_calling.apis.crypts.crypts import CryptocurrencyPriceTool
+from .services.crypts.crypts import CryptocurrencyPriceTool
 from langchain.agents import AgentType, AgentExecutor
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferWindowMemory
