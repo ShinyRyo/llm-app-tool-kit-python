@@ -1,5 +1,5 @@
-from src.fine_tuning.data_format_generator import ChatTemplate
-from src.fine_tuning.data_format_generator import TrainingJsonFormatter
+from src.training.data_format_generator import ChatTemplate
+from src.training.data_format_generator import TrainingJsonFormatter
 from src.util.token import DataAnalyzer
 import pytest
 import os

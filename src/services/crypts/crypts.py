@@ -3,22 +3,19 @@ from pydantic import BaseModel, Field
 from typing import Type
 from enum import Enum
 from langchain.tools import BaseTool
-from langchain.agents import AgentType, initialize_agent
-from langchain.chat_models import ChatOpenAI
-from langchain.callbacks import AsyncIteratorCallbackHandler
 from asyncer import asyncify
+from typing import Optional, Type
+from src.models.crypts import GetCryptocurrencyPriceInput
 import json
 
 
 cg = CoinGeckoAPI()
 
+
 def get_cryptocurrency_price(crypts: list[str], vs_currencies: str):
     results = cg.get_price(ids=crypts, vs_currencies=vs_currencies)
     return json.dumps(results)
 
-class GetCryptocurrencyPriceInput(BaseModel):
-    crypts: list[str] = Field(description="https://www.coingecko.com/apiで使用する通貨idを入力してください")
-    vs_currencies: str = Field(description="通貨の表現方法を入力してください")
 
 class CryptocurrencyPriceTool(BaseTool):
     name = "get_cryptocurrency_price"
@@ -31,3 +28,4 @@ class CryptocurrencyPriceTool(BaseTool):
     def _arun(self, crypts: list[str], vs_currencies: str):
         return asyncify(self._run, cancellable=False)(crypts, vs_currencies)
 
+    args_schema: Optional[Type[BaseModel]] = GetCryptocurrencyPriceInput

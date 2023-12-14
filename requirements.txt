@@ -17,3 +17,4 @@ python-socketio
 asyncer
 celery
 redis
+yfinance
