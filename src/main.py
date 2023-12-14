@@ -10,6 +10,7 @@ from langchain.schema import HumanMessage
 from pydantic import BaseModel
 from .agent.function_calling.base_function_agent import BaseFunctionAgent
 from .services.crypts.crypts import CryptocurrencyPriceTool
+from .services.yfinance.yfinance import YahooFinanceTool
 from langchain.agents import AgentType, AgentExecutor
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferWindowMemory
@@ -49,7 +50,7 @@ async def create_generator(query: str):
     )
 
     agent = initialize_agent(
-        tools=[CryptocurrencyPriceTool()],
+        tools=[CryptocurrencyPriceTool(), YahooFinanceTool()],
         llm=llm,
         agent=AgentType.OPENAI_MULTI_FUNCTIONS,
         return_intermediate_steps=False,
@@ -62,9 +63,11 @@ async def create_generator(query: str):
 
     await task
 
-@app.get('/')
+
+@app.get("/")
 async def get_status():
     return {"status": "ok"}
+
 
 @app.post("/stream_chat")
 async def stream_chat(message: Message):
