@@ -57,8 +57,10 @@ async def create_generator(query: str):
         verbose=True,
     )
 
-    task = asyncio.create_task(agent.arun(query))
+    task = asyncio.create_task(agent.ainvoke(query))
     async for token in stream_it.aiter():
+        if token == "final_answer":
+            break
         yield token
 
     await task
